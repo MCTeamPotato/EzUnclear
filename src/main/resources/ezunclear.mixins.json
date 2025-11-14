@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "me.kall.ezunclear.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "overwrites": {
+    "conformVisibility": false
+  },
+  "minVersion": "0.8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "FissionReactorMultiblockDataMixin",
+    "TileReactorCoreMixin"
+  ]
+}

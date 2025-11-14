@@ -1,0 +1,7 @@
+IEventBus modBus, Dist dist, ModContainer container
+
+# Proxy
+systemProp.http.proxyHost=localhost
+systemProp.http.proxyPort=7897
+systemProp.https.proxyHost=localhost
+systemProp.https.proxyPort=7897

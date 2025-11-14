@@ -1,0 +1,13 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "ezunclear"
+version = "${version}"
+displayName = "EzUnclear"
+authors = "Kall"
+description = '''
+'''
+#logoFile = ""
