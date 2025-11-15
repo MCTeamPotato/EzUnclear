@@ -16,10 +16,13 @@ public abstract class FissionReactorMultiblockDataMixin {
 
     @Redirect(method = "handleDamage", remap = false, at = @At(value = "INVOKE", remap = false, target = "Lmekanism/generators/common/content/fission/FissionReactorMultiblockData;createMeltdown(Lnet/minecraft/world/level/Level;)V"))
     private void onMeltDown(FissionReactorMultiblockData instance, @NotNull Level world) {
+        FissionReactorMultiblockData data = (FissionReactorMultiblockData) (Object) this;
+        if (PendingMeltdown.POSITIONS.contains(data.getMinPos())) return;
         Component ezUnclear = Component.translatable("info.ezunclear");
         world.players().forEach(player -> player.displayClientMessage(ezUnclear, false));
         synchronized (PendingMeltdown.MELT_DOWNS) {
             PendingMeltdown.MELT_DOWNS.add(() -> this.createMeltdown(world));
+            PendingMeltdown.POSITIONS.add(data.getMinPos());
         }
     }
 }

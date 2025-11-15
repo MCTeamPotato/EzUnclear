@@ -1,7 +1,9 @@
 package me.kall.ezunclear.data;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import me.kall.ezunclear.EzUnclear;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,10 +12,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = EzUnclear.MOD_ID)
 public class PendingMeltdown {
     public static final List<Runnable> MELT_DOWNS = new ObjectArrayList<>();
+    public static final Set<BlockPos> POSITIONS = new ObjectOpenHashSet<>();
     private static final Logger LOGGER = LogManager.getLogger(PendingMeltdown.class);
 
     @SubscribeEvent
@@ -29,6 +33,7 @@ public class PendingMeltdown {
                     }
                 });
                 MELT_DOWNS.clear();
+                POSITIONS.clear();
             }
         }
     }

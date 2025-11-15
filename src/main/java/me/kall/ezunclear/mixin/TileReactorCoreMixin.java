@@ -25,6 +25,8 @@ public abstract class TileReactorCoreMixin extends TileBCore {
 
     @Inject(method = "updateCriticalState", remap = false, at = @At(value = "INVOKE", remap = false, target = "Lcom/brandon3055/draconicevolution/blocks/reactor/ProcessExplosion;detonate()Z"), cancellable = true)
     private void onBigExplode(@NotNull CallbackInfo ci) {
+        TileReactorCore core = (TileReactorCore) (Object) this;
+        if (PendingMeltdown.POSITIONS.contains(core.getBlockPos())) return;
         ci.cancel();
         if (this.level != null) {
             Component ezUnclear = Component.translatable("info.ezunclear");
@@ -34,6 +36,7 @@ public abstract class TileReactorCoreMixin extends TileBCore {
                     this.explosionProcess.detonate();
                     this.level.removeBlock(this.worldPosition, false);
                 });
+                PendingMeltdown.POSITIONS.add(core.getBlockPos());
             }
         }
     }
