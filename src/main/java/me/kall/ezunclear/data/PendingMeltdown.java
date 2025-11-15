@@ -3,8 +3,8 @@ package me.kall.ezunclear.data;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import me.kall.ezunclear.EzUnclear;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,8 +22,7 @@ public class PendingMeltdown {
 
     @SubscribeEvent
     public static void onChat(ServerChatEvent event) {
-        Component goWrong = Component.translatable("info.ezunclear.interact");
-        if (event.getRawText().equals(goWrong.getString())) {
+        if (event.getRawText().equals(I18n.get("info.ezunclear.interact"))) {
             synchronized (MELT_DOWNS) {
                 MELT_DOWNS.forEach(task -> {
                     try {
