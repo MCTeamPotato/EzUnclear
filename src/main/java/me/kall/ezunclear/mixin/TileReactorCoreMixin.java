@@ -6,14 +6,14 @@ import com.brandon3055.draconicevolution.blocks.reactor.tileentity.TileReactorCo
 import me.kall.ezunclear.data.PendingMeltdown;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(TileReactorCore.class)
 public abstract class TileReactorCoreMixin extends TileBCore {
@@ -23,12 +23,11 @@ public abstract class TileReactorCoreMixin extends TileBCore {
         super(type, pos, state);
     }
 
-    @Inject(method = "updateCriticalState", remap = false, at = @At(value = "INVOKE", remap = false, target = "Lcom/brandon3055/draconicevolution/blocks/reactor/ProcessExplosion;detonate()Z"), cancellable = true)
-    private void onBigExplode(@NotNull CallbackInfo ci) {
+    @Redirect(method = "updateCriticalState", remap = false, at = @At(value = "INVOKE", remap = false, target = "Lcom/brandon3055/draconicevolution/blocks/reactor/ProcessExplosion;detonate()Z"))
+    private boolean onBigExplode(ProcessExplosion instance) {
         TileReactorCore core = (TileReactorCore) (Object) this;
-        if (PendingMeltdown.POSITIONS.contains(core.getBlockPos())) return;
-        ci.cancel();
-        if (this.level != null) {
+        if (PendingMeltdown.POSITIONS.contains(core.getBlockPos())) return false;
+        if (this.level instanceof ServerLevel) {
             Component ezUnclear = Component.translatable("info.ezunclear");
             this.level.players().forEach(player -> player.displayClientMessage(ezUnclear, false));
             synchronized (PendingMeltdown.MELT_DOWNS) {
@@ -36,8 +35,14 @@ public abstract class TileReactorCoreMixin extends TileBCore {
                     this.explosionProcess.detonate();
                     this.level.removeBlock(this.worldPosition, false);
                 });
-                PendingMeltdown.POSITIONS.add(core.getBlockPos());
+                return PendingMeltdown.POSITIONS.add(core.getBlockPos());
             }
         }
+        return false;
+    }
+
+    @Redirect(method = "updateCriticalState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"))
+    private boolean onRemove(Level instance, BlockPos blockPos, boolean pos) {
+        return false;
     }
 }
