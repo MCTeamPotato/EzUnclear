@@ -1,6 +1,6 @@
 package me.kall.ezunclear;
 
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.Mod;
 
 @Mod(EzUnclear.MOD_ID)
 public final class EzUnclear {

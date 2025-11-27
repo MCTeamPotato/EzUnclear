@@ -117,11 +117,11 @@ dependencies {
     if (embeddiumIntegration) modImplementation("curse.maven:embeddium-908741:${embeddium}")
     if (useDuplicationLess) modImplementation("curse.maven:duplicationless-1380105:${duplicationLess}")
 
-    modImplementation("curse.maven:mekanism-generators-268566:6552914")
-    modImplementation("curse.maven:mekanism-268560:6552911")
-    modImplementation("curse.maven:draconic-evolution-223565:6793843")
-    modImplementation("curse.maven:brandons-core-231382:5422013")
-    modImplementation("curse.maven:codechicken-lib-1-8-242818:5753868")
+    modImplementation("curse.maven:mekanism-generators-268566:7132171")
+    modImplementation("curse.maven:mekanism-268560:7132168")
+    modImplementation("curse.maven:draconic-evolution-223565:7131015")
+    modImplementation("curse.maven:brandons-core-231382:7130990")
+    modImplementation("curse.maven:codechicken-lib-1-8-242818:6583751")
 }
 
 processResources {
