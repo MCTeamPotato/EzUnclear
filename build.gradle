@@ -122,6 +122,8 @@ dependencies {
     modImplementation("curse.maven:draconic-evolution-223565:6793843")
     modImplementation("curse.maven:brandons-core-231382:5422013")
     modImplementation("curse.maven:codechicken-lib-1-8-242818:5753868")
+    modImplementation("curse.maven:hbms-nuclear-tech-modernized-1319588:7292070")
+    modImplementation("curse.maven:nuclearcraft-neoteric-840010:7136984")
 }
 
 processResources {

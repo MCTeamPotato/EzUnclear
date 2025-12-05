@@ -11,6 +11,11 @@
   },
   "mixins": [
     "FissionReactorMultiblockDataMixin",
-    "TileReactorCoreMixin"
+    "TileReactorCoreMixin",
+    "nc.ChamberTerminalBEMixin",
+    "nc.FissionControllerBEMixin",
+    "nc.FusionCoreBEMixin",
+    "nc.FusionReactorMultiblockMixin",
+    "nc.access.AbstractMultiblockInvoker"
   ]
 }

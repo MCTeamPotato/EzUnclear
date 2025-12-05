@@ -3,9 +3,9 @@ package me.kall.ezunclear.mixin;
 import com.brandon3055.brandonscore.blocks.TileBCore;
 import com.brandon3055.draconicevolution.blocks.reactor.ProcessExplosion;
 import com.brandon3055.draconicevolution.blocks.reactor.tileentity.TileReactorCore;
+import me.kall.ezunclear.EzUnclear;
 import me.kall.ezunclear.data.PendingMeltdown;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,15 +28,10 @@ public abstract class TileReactorCoreMixin extends TileBCore {
         TileReactorCore core = (TileReactorCore) (Object) this;
         if (PendingMeltdown.POSITIONS.contains(core.getBlockPos())) return false;
         if (this.level instanceof ServerLevel) {
-            Component ezUnclear = Component.translatable("info.ezunclear");
-            this.level.players().forEach(player -> player.displayClientMessage(ezUnclear, false));
-            synchronized (PendingMeltdown.MELT_DOWNS) {
-                PendingMeltdown.MELT_DOWNS.add(() -> {
-                    this.explosionProcess.detonate();
-                    this.level.removeBlock(this.worldPosition, false);
-                });
-                return PendingMeltdown.POSITIONS.add(core.getBlockPos());
-            }
+            return EzUnclear.broadcast((ServerLevel) this.level, () -> {
+                this.explosionProcess.detonate();
+                this.level.removeBlock(this.worldPosition, false);
+            }, core.getBlockPos());
         }
         return false;
     }

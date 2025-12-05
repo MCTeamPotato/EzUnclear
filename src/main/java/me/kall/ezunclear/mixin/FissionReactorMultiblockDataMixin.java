@@ -1,8 +1,7 @@
 package me.kall.ezunclear.mixin;
 
-import me.kall.ezunclear.data.PendingMeltdown;
+import me.kall.ezunclear.EzUnclear;
 import mekanism.generators.common.content.fission.FissionReactorMultiblockData;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -19,13 +18,7 @@ public abstract class FissionReactorMultiblockDataMixin {
     private void onMeltDown(FissionReactorMultiblockData instance, @NotNull Level world) {
         if (world instanceof ServerLevel) {
             FissionReactorMultiblockData data = (FissionReactorMultiblockData) (Object) this;
-            if (PendingMeltdown.POSITIONS.contains(data.getMinPos())) return;
-            Component ezUnclear = Component.translatable("info.ezunclear");
-            world.players().forEach(player -> player.displayClientMessage(ezUnclear, false));
-            synchronized (PendingMeltdown.MELT_DOWNS) {
-                PendingMeltdown.MELT_DOWNS.add(() -> this.createMeltdown(world));
-                PendingMeltdown.POSITIONS.add(data.getMinPos());
-            }
+            EzUnclear.broadcast((ServerLevel) world, () -> this.createMeltdown(world), data.getMinPos());
         }
     }
 }
